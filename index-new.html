@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Get instant help for IBM MaaS360 issues with our AI-powered assistant. Solve problems quickly with step-by-step solutions.">
+    <title>CACERES COMMANDERS – MaaS360 HelpDesk Assistant</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-primary: #3B82F6;
+            --color-secondary: #1E40AF;
+            --color-accent: #DBEAFE;
+            --color-light: #F9FAFB;
+        }
+        
+        /* Custom color classes */
+        .bg-primary { background-color: var(--color-primary); }
+        .bg-secondary { background-color: var(--color-secondary); }
+        .bg-accent { background-color: var(--color-accent); }
+        .bg-light { background-color: var(--color-light); }
+        
+        .text-primary { color: var(--color-primary); }
+        .text-secondary { color: var(--color-secondary); }
+        
+        .hover\:bg-primary:hover { background-color: var(--color-primary); }
+        .hover\:bg-secondary:hover { background-color: var(--color-secondary); }
+        .hover\:text-primary:hover { color: var(--color-primary); }
+        
+        .border-primary { border-color: var(--color-primary); }
+        .ring-primary { --tw-ring-color: var(--color-primary); }
+        
+        /* General styles */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        }
+        
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -6px rgba(59, 130, 246, 0.1);
+        }
+        
+        .floating-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            transition: transform 0.3s ease;
+        }
+        
+        .floating-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .chatbot-container {
+            height: 600px;
+            max-height: 80vh;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        @media (max-width: 768px) {
+            .chatbot-container {
+                height: 500px;
+            }
+        }
+        
+        /* Animation styles */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c5d5f5;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+    </style>
+</head>
+<body class="bg-light text-gray-800">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm py-4 sticky top-0 z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl">🛡️</span>
+                <span class="font-bold text-lg text-primary">CACERES COMMANDERS</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#how-it-works" class="text-gray-700 hover:text-primary transition duration-300">How It Works</a>
+                <a href="#features" class="text-gray-700 hover:text-primary transition duration-300">Features</a>
+                <a href="#chatbot" class="text-gray-700 hover:text-primary transition duration-300">Chatbot</a>
+                <a href="#chatbot" class="bg-primary hover:bg-secondary text-white font-medium py-2 px-4 rounded-lg transition duration-300">
+                    Start Chatting
+                </a>
+            </div>
+            <!-- Mobile menu button -->
+            <button class="md:hidden text-gray-700 focus:outline-none" id="mobile-menu-button">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-white py-4 px-6 shadow-inner" id="mobile-menu">
+            <div class="flex flex-col space-y-4">
+                <a href="#how-it-works" class="text-gray-700 hover:text-primary transition duration-300">How It Works</a>
+                <a href="#features" class="text-gray-700 hover:text-primary transition duration-300">Features</a>
+                <a href="#chatbot" class="text-gray-700 hover:text-primary transition duration-300">Chatbot</a>
+                <a href="#chatbot" class="bg-primary hover:bg-secondary text-white font-medium py-2 px-4 rounded-lg transition duration-300 text-center">
+                    Start Chatting
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg py-20 md:py-32">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 animate-fade-in">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
+                        Get Instant Help for IBM MaaS360 Issues
+                    </h1>
+                    <p class="text-xl text-gray-700 mb-8">
+                        Our AI-powered assistant provides quick solutions to your MaaS360 problems.
+                    </p>
+                    <a href="#chatbot" class="bg-primary hover:bg-secondary text-white font-semibold py-3 px-8 rounded-lg text-lg transition duration-300 inline-flex items-center">
+                        <span>Start Chatting Now</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                <div class="md:w-1/2 flex justify-center animate-fade-in delay-200">
+                    <img src="https://cdn.pixabay.com/photo/2021/08/04/13/06/software-developer-6521720_1280.png" alt="AI Assistant" class="w-full max-w-md rounded-lg shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-20 bg-white" id="how-it-works">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">How It Works</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Step 1 -->
+                <div class="card bg-white p-8 rounded-xl shadow-md text-center animate-fade-in">
+                    <div class="text-5xl text-primary mb-6">💬</div>
+                    <h3 class="text-xl font-semibold mb-4">Describe Your Issue</h3>
+                    <p class="text-gray-600">
+                        Simply explain your MaaS360 problem in natural language. No technical jargon needed.
+                    </p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="card bg-white p-8 rounded-xl shadow-md text-center animate-fade-in delay-100">
+                    <div class="text-5xl text-primary mb-6">🧠</div>
+                    <h3 class="text-xl font-semibold mb-4">AI Understands the Problem</h3>
+                    <p class="text-gray-600">
+                        Our AI assistant analyzes your issue using IBM MaaS360 knowledge and best practices.
+                    </p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="card bg-white p-8 rounded-xl shadow-md text-center animate-fade-in delay-200">
+                    <div class="text-5xl text-primary mb-6">✅</div>
+                    <h3 class="text-xl font-semibold mb-4">Get Step-by-Step Fixes</h3>
+                    <p class="text-gray-600">
+                        Receive clear, actionable solutions to resolve your MaaS360 issues quickly.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 gradient-bg" id="features">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">Why Choose Our Assistant</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="flex items-start space-x-4 bg-white p-6 rounded-xl shadow-md animate-fade-in">
+                    <div class="bg-accent p-3 rounded-lg">
+                        <i class="fas fa-bolt text-primary text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Instant Solutions</h3>
+                        <p class="text-gray-600">
+                            Get immediate answers without waiting for IT support tickets. Our AI provides solutions in seconds.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start space-x-4 bg-white p-6 rounded-xl shadow-md animate-fade-in delay-100">
+                    <div class="bg-accent p-3 rounded-lg">
+                        <i class="fas fa-brain text-primary text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">AI-Powered Intelligence</h3>
+                        <p class="text-gray-600">
+                            Leverages advanced AI to understand complex MaaS360 issues and provide accurate solutions.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start space-x-4 bg-white p-6 rounded-xl shadow-md animate-fade-in delay-200">
+                    <div class="bg-accent p-3 rounded-lg">
+                        <i class="fas fa-clock text-primary text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">24/7 Availability</h3>
+                        <p class="text-gray-600">
+                            Access help anytime, anywhere, without scheduling constraints. Our assistant is always ready.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start space-x-4 bg-white p-6 rounded-xl shadow-md animate-fade-in delay-300">
+                    <div class="bg-accent p-3 rounded-lg">
+                        <i class="fas fa-shield-alt text-primary text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Secure & Reliable</h3>
+                        <p class="text-gray-600">
+                            Built with enterprise-grade security for your sensitive data. Your information stays protected.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chatbot Section -->
+    <section class="py-20 bg-white" id="chatbot">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-6">Talk to Our MaaS360 Assistant</h2>
+            <p class="text-center text-gray-700 mb-12 max-w-2xl mx-auto">
+                Our AI-powered assistant is ready to help you solve any IBM MaaS360 issues. Just start a conversation below.
+            </p>
+            
+            <div class="chatbot-container mx-auto max-w-4xl bg-white">
+                <div id="flowise-container">
+                    <!-- Fallback content if chatbot doesn't load -->
+                    <div id="chatbot-fallback" class="p-8 text-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                        <p class="text-gray-600 mb-4">Loading MaaS360 Assistant...</p>
+                        <p class="text-sm text-gray-500">If the chatbot doesn't appear, it may be due to CORS restrictions when testing locally.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 gradient-bg">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">What Users Say</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="ml-2 text-gray-600">5.0</span>
+                    </div>
+                    <p class="text-gray-700 mb-6">
+                        "This assistant saved me hours of troubleshooting. I had a complex enrollment issue that was resolved in minutes!"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold">JD</div>
+                        <div class="ml-3">
+                            <p class="font-medium">John Doe</p>
+                            <p class="text-sm text-gray-500">IT Administrator</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="ml-2 text-gray-600">4.5</span>
+                    </div>
+                    <p class="text-gray-700 mb-6">
+                        "The step-by-step guidance for policy configuration was incredibly helpful. Much better than digging through documentation."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold">AS</div>
+                        <div class="ml-3">
+                            <p class="font-medium">Alice Smith</p>
+                            <p class="text-sm text-gray-500">Security Analyst</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 flex">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="ml-2 text-gray-600">5.0</span>
+                    </div>
+                    <p class="text-gray-700 mb-6">
+                        "As a new MaaS360 admin, this assistant has been invaluable for learning the platform. It's like having an expert by my side."
+                    </p>
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold">RJ</div>
+                        <div class="ml-3">
+                            <p class="font-medium">Robert Johnson</p>
+                            <p class="text-sm text-gray-500">IT Support Specialist</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl">🛡️</span>
+                        <span class="font-bold text-lg">CACERES COMMANDERS</span>
+                    </div>
+                    <p class="text-gray-400 mt-2">Empowering IT support with AI</p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-8">
+                    <div>
+                        <h3 class="font-semibold mb-2">Quick Links</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#how-it-works" class="text-gray-400 hover:text-white transition duration-300">How It Works</a></li>
+                            <li><a href="#features" class="text-gray-400 hover:text-white transition duration-300">Features</a></li>
+                            <li><a href="#chatbot" class="text-gray-400 hover:text-white transition duration-300">Chatbot</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold mb-2">Resources</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">MaaS360 Documentation</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">IBM Support</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">© 2023 CACERES COMMANDERS. All rights reserved.</p>
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating chat button for mobile -->
+    <a href="#chatbot" class="floating-button bg-primary hover:bg-secondary text-white p-4 rounded-full shadow-lg">
+        <i class="fas fa-comment-dots text-xl"></i>
+    </a>
+
+    <!-- Flowise Chatbot Script -->
+    <script type="module">
+        import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
+        
+        // Initialize the chatbot with enhanced styling
+        Chatbot.init({
+            chatflowid: "8ddc51f5-ec2d-4fda-9e77-f840b59e82c5",
+            apiHost: "https://flowise-t18.tselabs.cloud",
+            container: "#flowise-container",
+            theme: {
+                button: {
+                    backgroundColor: '#3B81F6',
+                    right: 20,
+                    bottom: 20,
+                    size: 56,
+                    dragAndDrop: true,
+                    iconColor: 'white',
+                    customIconSrc: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/google-messages.svg',
+                    autoWindowOpen: {
+                        autoOpen: true,
+                        openDelay: 2,
+                        autoOpenOnMobile: false
+                    }
+                },
+                tooltip: {
+                    showTooltip: true,
+                    tooltipMessage: 'Need help with MaaS360? Ask me!',
+                    tooltipBackgroundColor: '#1E40AF',
+                    tooltipTextColor: 'white',
+                    tooltipFontSize: 16
+                },
+                disclaimer: {
+                    title: 'MaaS360 HelpDesk Assistant',
+                    message: "By using this chatbot, you agree to the terms and conditions",
+                    textColor: '#333',
+                    buttonColor: '#3b82f6',
+                    buttonText: 'Start Chatting',
+                    buttonTextColor: 'white',
+                    blurredBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    backgroundColor: 'white'
+                },
+                chatWindow: {
+                    showTitle: true,
+                    showAgentMessages: true,
+                    title: 'MaaS360 HelpDesk Assistant',
+                    titleAvatarSrc: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/ibm.svg',
+                    welcomeMessage: 'Hello! 👋 I\'m your MaaS360 HelpDesk Assistant. How can I help you today?',
+                    errorMessage: 'Sorry, there was an error processing your request. Please try again.',
+                    backgroundColor: '#ffffff',
+                    height: 650,
+                    width: 400,
+                    fontSize: 16,
+                    starterPrompts: [
+                        "How do I reset my MaaS360 password?",
+                        "Device enrollment issues",
+                        "MaaS360 policy configuration",
+                        "Troubleshooting app catalog"
+                    ],
+                    starterPromptFontSize: 15,
+                    clearChatOnReload: false,
+                    sourceDocsTitle: 'Sources:',
+                    renderHTML: true,
+                    botMessage: {
+                        backgroundColor: '#f0f7ff',
+                        textColor: '#303235',
+                        showAvatar: true,
+                        avatarSrc: 'https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/ibm.svg'
+                    },
+                    userMessage: {
+                        backgroundColor: '#3B81F6',
+                        textColor: '#ffffff',
+                        showAvatar: true,
+                        avatarSrc: 'https://raw.githubusercontent.com/zahidkhawaja/langchain-chat-nextjs/main/public/usericon.png'
+                    },
+                    textInput: {
+                        placeholder: 'Describe your MaaS360 issue...',
+                        backgroundColor: '#ffffff',
+                        textColor: '#303235',
+                        sendButtonColor: '#3B81F6',
+                        autoFocus: true,
+                        sendMessageSound: true
+                    },
+                    feedback: {
+                        color: '#303235'
+                    },
+                    dateTimeToggle: {
+                        date: true,
+                        time: true
+                    },
+                    footer: {
+                        textColor: '#303235',
+                        text: 'Powered by',
+                        company: 'CACERES COMMANDERS',
+                        companyLink: '#'
+                    }
+                }
+            }
+        })
+        
+        // Hide the fallback content when chatbot loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const fallbackElement = document.getElementById('chatbot-fallback');
+            if (fallbackElement) {
+                setTimeout(() => {
+                    fallbackElement.style.display = 'none';
+                }, 1000);
+            }
+        });
+    </script>
+
+    <!-- Mobile menu script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                
+                // Close mobile menu when clicking a link
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.add('hidden');
+                    });
+                });
+            }
+            
+            // Smooth scrolling for all anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
